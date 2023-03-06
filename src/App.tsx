@@ -1,6 +1,7 @@
 import "./App.css";
 import { createHashRouter, Link, RouterProvider } from "react-router-dom";
 import useQuery from "./hooks/useQuery";
+import { useEffect } from "react";
 
 const QueryBuilder = ({
   keyTitle: key,
@@ -8,7 +9,7 @@ const QueryBuilder = ({
   onUpdate,
 }: {
   keyTitle?: string;
-  value?: string;
+  value?: string[];
   onUpdate: (k: string, v: string) => void;
 }) => {
   return (
@@ -34,19 +35,22 @@ const QueryBuilder = ({
 };
 
 const Home = () => {
-  const { searchParams, updateSearchParams, deleteSearchParams } = useQuery();
+  const { queryPairs, updateSearchParams, deleteSearchParam } = useQuery();
 
+  useEffect(() => {
+    console.log(queryPairs);
+  }, [queryPairs]);
   return (
     <div>
       <ul>
-        {[...searchParams.entries()].map(([key, value]) => (
+        {Object.entries(queryPairs).map(([key, value]) => (
           <li key={key}>
             <QueryBuilder
               onUpdate={(key, value) => updateSearchParams([key, value])}
               keyTitle={key}
               value={value}
             />
-            <button onClick={() => deleteSearchParams(key)}>Delete</button>
+            <button onClick={() => deleteSearchParam(key)}>Delete</button>
           </li>
         ))}
       </ul>

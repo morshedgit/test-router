@@ -1,7 +1,7 @@
 import "./App.css";
-import { createBrowserRouter, Link, RouterProvider } from "react-router-dom";
+import { createHashRouter, Link, RouterProvider } from "react-router-dom";
 
-const router = createBrowserRouter(
+const router = createHashRouter(
   [
     {
       path: "/",
@@ -29,7 +29,7 @@ const router = createBrowserRouter(
     },
   ],
   {
-    basename: "/test-router",
+    // basename: "test-router",
   }
 );
 

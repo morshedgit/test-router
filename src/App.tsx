@@ -1,94 +1,45 @@
-import "./App.css";
-import { createHashRouter, Link, RouterProvider } from "react-router-dom";
-import useQuery from "./hooks/useQuery";
-import { useEffect } from "react";
+import { createHashRouter, RouterProvider } from "react-router-dom";
+import IngredientProvider from "./components/IngredientProvider";
+import Meal from "./pages/Meal";
+import Layout from "./layout";
+import MyMeals from "./pages/MyMeals";
 
-const QueryBuilder = ({
-  keyTitle: key,
-  value,
-  onUpdate,
-}: {
-  keyTitle?: string;
-  value?: string[];
-  onUpdate: (k: string, v: string) => void;
-}) => {
-  return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        const form = e.currentTarget;
-        const formData = new FormData(form);
-        const { key, value } = Object.fromEntries(formData.entries()) as {
-          key: string;
-          value: string;
-        };
-        onUpdate(key, value);
-      }}
-    >
-      <input name="key" placeholder="key" defaultValue={key} />
-      <input name="value" placeholder="value" defaultValue={value} />
-      <button hidden type="submit">
-        Submit
-      </button>
-    </form>
-  );
-};
-
-const Home = () => {
-  const { queryPairs, updateSearchParams, deleteSearchParam } = useQuery();
-
-  useEffect(() => {
-    console.log(queryPairs);
-  }, [queryPairs]);
-  return (
-    <div>
-      <ul>
-        {Object.entries(queryPairs).map(([key, value]) => (
-          <li key={key}>
-            <QueryBuilder
-              onUpdate={(key, value) => updateSearchParams([key, value])}
-              keyTitle={key}
-              value={value}
-            />
-            <button onClick={() => deleteSearchParam(key)}>Delete</button>
-          </li>
-        ))}
-      </ul>
-      <QueryBuilder
-        onUpdate={(key, value) => updateSearchParams([key, value])}
-      />
-      <nav>
-        <Link to="/">Home</Link>
-        <Link to="/about">About</Link>
-      </nav>
-      Home
-    </div>
-  );
-};
-
-const router = createHashRouter(
-  [
-    {
-      path: "/",
-      element: <Home />,
-    },
-    {
-      path: "/about",
-      element: (
-        <div>
-          <nav>
-            <Link to="/">Home</Link>
-            <Link to="/about">About</Link>
-          </nav>
-          About
-        </div>
-      ),
-    },
-  ],
+const router = createHashRouter([
   {
-    // basename: "test-router",
-  }
-);
+    path: "/",
+    element: (
+      <IngredientProvider>
+        <Layout />
+      </IngredientProvider>
+    ),
+    children: [
+      {
+        index: true,
+        element: <Meal />,
+      },
+      {
+        path: "my-meals",
+        element: <MyMeals />,
+      },
+      {
+        path: "favorite",
+        element: <p>favorite</p>,
+      },
+      {
+        path: "recent",
+        element: <p>recent</p>,
+      },
+      {
+        path: "setting",
+        element: <p>setting</p>,
+      },
+      {
+        path: "help",
+        element: <p>help</p>,
+      },
+    ],
+  },
+]);
 
 function App() {
   return <RouterProvider router={router} />;

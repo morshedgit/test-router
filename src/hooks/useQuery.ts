@@ -14,7 +14,7 @@ const convertSearchParamsToQueryObject = (params: URLSearchParams) => {
 const useQuery = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const updateSearchParams = ([keyArg, valueArg]: [string, string]) => {
+  const addSearchParam = ([keyArg, valueArg]: [string, string]) => {
     setSearchParams((prev) => {
       const queries: Record<string, string[]> =
         convertSearchParamsToQueryObject(prev);
@@ -23,7 +23,17 @@ const useQuery = () => {
       return queries;
     });
   };
-
+  const updateSearchParam = ([keyArg, valueArg]: [
+    string,
+    string | string[]
+  ]) => {
+    setSearchParams((prev) => {
+      const queries: Record<string, string[]> =
+        convertSearchParamsToQueryObject(prev);
+      queries[keyArg] = Array.isArray(valueArg) ? valueArg : [valueArg];
+      return queries;
+    });
+  };
   const deleteSearchParam = (keyArg: string) => {
     setSearchParams((prev) => {
       const queries: Record<string, string[]> =
@@ -39,7 +49,13 @@ const useQuery = () => {
     return queries;
   }, [searchParams]);
 
-  return { queryPairs, updateSearchParams, deleteSearchParam };
+  return {
+    queryPairs,
+    addSearchParam,
+    updateSearchParam,
+    deleteSearchParam,
+    paramsString: searchParams.toString(),
+  };
 };
 
 export default useQuery;

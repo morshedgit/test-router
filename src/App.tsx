@@ -3,6 +3,7 @@ import IngredientProvider from "./components/IngredientProvider";
 import Meal from "./pages/Meal";
 import Layout from "./layout";
 import MyMeals from "./pages/MyMeals";
+import { LocalCache } from "./common/util";
 
 const router = createHashRouter([
   {

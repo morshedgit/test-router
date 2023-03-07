@@ -51,7 +51,7 @@ const Layout: React.FC = () => {
         >
           <Icon title="menu" className="text-4xl" />
         </button>
-        <a href="/">
+        <Link to="/">
           <h2 className="flex items-center gap-4">
             <p className="text-2xl">
               <Logo />
@@ -61,7 +61,7 @@ const Layout: React.FC = () => {
               <b className="text-orange-600">M</b>eal
             </span>
           </h2>
-        </a>
+        </Link>
         <Search />
         <div className="w-fit pr-4">
           <a href="#">Login / Sign Up</a>

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { IngredientContext } from "../../components/IngredientProvider";
 import IntroContent from "./IntroContent";
 import Ingredients from "./Ingredients";
@@ -27,6 +27,8 @@ const Meal: React.FC = () => {
     paramsString,
     title,
     updateTitle: onUpdateTitle,
+    addMeal,
+    removeMeal,
     updateMeal,
   } = useContext(IngredientContext);
 
@@ -41,6 +43,26 @@ const Meal: React.FC = () => {
   useEffect(() => {
     setShouldSave(true);
   }, [ingredients]);
+
+  /**
+   * A ref object to keep track of the old title when it changes.
+   * @type {React.MutableRefObject<string>}
+   */
+  const oldTitleRef = useRef(title);
+  /**
+   * Effect hook to update the meals array when the title changes.
+   */
+  useEffect(() => {
+    const updateMealStore = () => {
+      if (!title) return;
+      if (oldTitleRef.current) {
+        removeMeal(oldTitleRef.current);
+      }
+      addMeal({ title, path: paramsString });
+      oldTitleRef.current = title;
+    };
+    updateMealStore();
+  }, [title]);
 
   return (
     <>

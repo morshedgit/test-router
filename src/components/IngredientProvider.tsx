@@ -99,29 +99,23 @@ const IngredientProvider: React.FC<IngredientProviderProps> = (props) => {
     onUpdateTitle("");
     resetIngredients();
   };
-  /**
-   * A ref object to keep track of the old title when it changes.
-   * @type {React.MutableRefObject<string>}
-   */
-  const oldTitleRef = useRef(title);
-  /**
-   * Effect hook to update the meals array when the title changes.
-   */
-  useEffect(() => {
-    if (oldTitleRef.current) {
-      removeMeal(oldTitleRef.current);
-    }
-    addMeal({ title, path: paramsString });
-    oldTitleRef.current = title;
-  }, [title]);
 
   /**
-   * Effect hook to update the url search params when they change.
+   * Effect hook to update the url search params when ingredients change.
    */
   useEffect(() => {
     if (initializing) return;
     onUpdateIngredients(ingredients);
   }, [ingredients]);
+
+  /**
+   * Effect hook to update ingredients when the user leaves page and
+   * as a result url search params change to empty string.
+   */
+  useEffect(() => {
+    if (paramsString) return;
+    resetIngredients();
+  }, [paramsString]);
 
   return (
     <IngredientContext.Provider

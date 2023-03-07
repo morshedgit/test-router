@@ -1,8 +1,6 @@
 import { useMemo, useState } from "react";
-import { LocalCache } from "../common/util";
+import { mealStore } from "../common/util";
 import { Meal } from "../types";
-
-const mealStore = new LocalCache("mealStore");
 
 interface MealStore {
   meals: Meal[];

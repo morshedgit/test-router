@@ -125,3 +125,5 @@ export class LocalCache {
     localStorage.setItem(this.storeKey, JSON.stringify(store));
   }
 }
+
+export const mealStore = new LocalCache("mealStore");
